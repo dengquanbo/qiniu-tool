@@ -1,0 +1,37 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "cn.dqb.qiniuoss.autoconfigure.QiniuProperty",
+      "type": "cn.dqb.qiniuoss.autoconfigure.QiniuProperty",
+      "name": "qiniu"
+    }
+  ],
+  "properties": [
+    {
+      "name": "qiniu.host",
+      "type": "java.lang.String",
+      "sourceType": "cn.dqb.qiniuoss.autoconfigure.QiniuProperty"
+    },
+    {
+      "name": "qiniu.accessKey",
+      "type": "java.lang.String",
+      "sourceType": "cn.dqb.qiniuoss.autoconfigure.QiniuProperty"
+    },
+    {
+      "name": "qiniu.secretKey",
+      "type": "java.lang.String",
+      "sourceType": "cn.dqb.qiniuoss.autoconfigure.QiniuProperty"
+    },
+    {
+      "name": "qiniu.bucket",
+      "type": "java.lang.String",
+      "sourceType": "cn.dqb.qiniuoss.autoconfigure.QiniuProperty"
+    },
+    {
+      "name": "qiniu.zone",
+      "type": "java.lang.String",
+      "sourceType": "cn.dqb.qiniuoss.autoconfigure.QiniuProperty"
+    }
+  ]
+}

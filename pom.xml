@@ -3,22 +3,64 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.0.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
+    <packaging>pom</packaging>
+    <modules>
+        <module>qiniuoss-spring-boot-autoconfigure</module>
+        <module>qiniuoss-spring-boot-starter</module>
+        <module>qiniuoss-spring-boot-simples</module>
+    </modules>
+
     <groupId>cn.dqb</groupId>
-    <artifactId>qiniu-tool</artifactId>
+    <artifactId>qiniuoss-spring-boot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>qiniu-tool</name>
+    <name>qiniuoss-spring-boot</name>
     <description>后端服务调用七牛云服务</description>
 
     <properties>
         <java.version>1.8</java.version>
         <qiniu.version>7.2.23</qiniu.version>
+        <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
+        <spring.boot.autoconfigure>2.2.0.RELEASE</spring.boot.autoconfigure>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!--引入子包-->
+            <dependency>
+                <groupId>cn.dqb</groupId>
+                <artifactId>qiniuoss-spring-boot-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.dqb</groupId>
+                <artifactId>qiniuoss-spring-boot-autoconfigure</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!--七牛-->
+            <dependency>
+                <groupId>com.qiniu</groupId>
+                <artifactId>qiniu-java-sdk</artifactId>
+                <version>${qiniu.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.10</version>
+                <scope>compile</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -59,6 +101,14 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.56</version>
         </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

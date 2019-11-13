@@ -1,7 +1,0 @@
-qiniu:
-  ak: xx
-  sk: xx
-  bucket: xx
-  host: xxx
-  videoPipeline: xxx
-  imagePipeline: xxx
