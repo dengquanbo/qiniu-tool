@@ -196,3 +196,4 @@ jboss/server/minimal/work/**/*
 .mvn/
 mvn*
 ### my template
+application.yml
