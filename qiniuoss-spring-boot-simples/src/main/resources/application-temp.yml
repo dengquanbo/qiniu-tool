@@ -1,0 +1,6 @@
+qiniu:
+  accessKey: ak
+  secretKey: sk
+  bucket: bucket
+  host: xxww
+  zone: z0
