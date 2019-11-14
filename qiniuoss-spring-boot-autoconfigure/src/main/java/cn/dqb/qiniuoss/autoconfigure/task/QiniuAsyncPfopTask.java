@@ -1,7 +1,7 @@
 package cn.dqb.qiniuoss.autoconfigure.task;
 
-import cn.dqb.qiniuoss.autoconfigure.entity.QiniuHelper;
-import cn.dqb.qiniuoss.autoconfigure.exception.QiniuException;
+import cn.dqb.qiniuoss.autoconfigure.helper.QiniuHelper;
+import cn.dqb.qiniuoss.autoconfigure.exception.QiniuOssException;
 import com.qiniu.util.StringMap;
 import org.apache.commons.lang3.StringUtils;
 
@@ -66,7 +66,7 @@ public class QiniuAsyncPfopTask extends AbstractQiniuBaseTask {
     public String generateRule() throws Exception {
         String fops = generateFops();
         if (StringUtils.isBlank(fops)) {
-            throw new QiniuException("fops is empty");
+            throw new QiniuOssException("fops is empty");
         }
         String encodedEntryUri = generateEncodedEntryURI();
         String pfops = fops + "|saveas/" + encodedEntryUri;

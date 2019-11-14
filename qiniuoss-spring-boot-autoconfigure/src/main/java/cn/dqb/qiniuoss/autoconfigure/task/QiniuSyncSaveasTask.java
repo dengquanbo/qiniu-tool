@@ -1,8 +1,8 @@
 package cn.dqb.qiniuoss.autoconfigure.task;
 
 import cn.dqb.qiniuoss.autoconfigure.entity.OkHttpUtil;
-import cn.dqb.qiniuoss.autoconfigure.entity.QiniuHelper;
-import cn.dqb.qiniuoss.autoconfigure.exception.QiniuException;
+import cn.dqb.qiniuoss.autoconfigure.helper.QiniuHelper;
+import cn.dqb.qiniuoss.autoconfigure.exception.QiniuOssException;
 import com.alibaba.fastjson.JSON;
 import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
@@ -85,7 +85,7 @@ public class QiniuSyncSaveasTask extends AbstractQiniuBaseTask {
         String key = JSON.parseObject(result).getString("key");
         logger.info("七牛另存为新key = {}", key);
         if (StringUtils.isBlank(key)) {
-            throw new QiniuException("key is empty");
+            throw new QiniuOssException("key is empty");
         }
         return key;
     }

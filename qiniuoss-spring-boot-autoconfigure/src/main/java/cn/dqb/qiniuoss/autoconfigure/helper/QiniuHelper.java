@@ -1,15 +1,10 @@
-package cn.dqb.qiniuoss.autoconfigure.entity;
+package cn.dqb.qiniuoss.autoconfigure.helper;
 
 import cn.dqb.qiniuoss.autoconfigure.QiniuProperty;
-import com.alibaba.fastjson.JSON;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
-import com.qiniu.http.Response;
 import com.qiniu.processing.OperationManager;
-import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
-import com.qiniu.storage.model.FileInfo;
-import com.qiniu.storage.model.FileListing;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
 import com.qiniu.util.UrlSafeBase64;
@@ -19,6 +14,7 @@ import java.util.regex.Pattern;
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,11 +37,9 @@ public class QiniuHelper {
     private String sk;
     private Auth auth;
     private Configuration cfg;
+
+    @Getter
     private String host;
-    /**
-     * 用于文件上传
-     */
-    private BucketManager bucketManager;
 
     public QiniuHelper(QiniuProperty property) {
         this.bucket = property.getBucket();
@@ -53,7 +47,9 @@ public class QiniuHelper {
         this.cfg = new Configuration(Zone.zone0());
         this.ak = property.getAccessKey();
         this.sk = property.getSecretKey();
-        this.bucketManager = new BucketManager(auth, cfg);
+        /**
+         * 用于文件上传
+         */
         this.host = property.getHost();
     }
 
@@ -78,41 +74,12 @@ public class QiniuHelper {
         return null;
     }
 
-    public String getUploadToken() {
-        return getUploadToken(null, 3600, null, true);
-    }
-
-    public String getUploadToken(String key) {
-        return getUploadToken(key, 3600, null, true);
-    }
 
 //    public void upload(String url) {
 //        bucketManager.fetch()
 //    }
 
-    public String getUploadToken(String key, long expires) {
-        return getUploadToken(key, expires, null, true);
-    }
 
-    public String getUploadToken(String key, long expires, StringMap policy) {
-        return getUploadToken(key, expires, policy, true);
-    }
-
-    /**
-     * 生成上传token
-     *
-     * 文档： https://developer.qiniu.com/kodo/manual/1208/upload-token
-     *
-     * @param key key，可为 null
-     * @param expires 有效时长，单位秒。
-     * @param policy 上传策略的其它参数，如 new StringMap().put("endUser", "uid").putNotEmpty("returnBody", "")。 scope通过
-     * bucket、key间接设置，deadline 通过 expires 间接设置
-     * @param strict 是否去除非限定的策略字段，默认true
-     * @return 生成的上传token
-     */
-    public String getUploadToken(String key, long expires, StringMap policy, boolean strict) {
-        return this.auth.uploadToken(this.bucket, key, expires, policy, strict);
-    }
 
     public String pfop(String key, String fops, StringMap params) throws QiniuException {
         return pfop(bucket, key, fops, params);
@@ -145,39 +112,6 @@ public class QiniuHelper {
         return ak + ":" + UrlSafeBase64.encodeToString(h);
     }
 
-    public boolean isExistBucket(String fileName) throws QiniuException {
-        return this.isExistBucket(this.bucket, fileName);
-    }
-
-    public void listFiles(String fileName) throws QiniuException {
-        FileListing fileListing = bucketManager.listFiles(bucket, fileName, null, 100, null);
-        FileInfo[] items = fileListing.items;
-        for (FileInfo item : items) {
-            System.out.println(item.key);
-        }
-    }
-
-    public boolean isExistBucket(String bucket, String fileName) throws QiniuException {
-        FileListing fileListing = bucketManager.listFiles(bucket, fileName, null, 100, null);
-        FileInfo[] items = fileListing.items;
-        logger.info("listFilesV2,fileName = {},result = {}", fileListing, JSON.toJSONString(items));
-        for (FileInfo item : items) {
-            System.out.println(item.key);
-            if (item.key.equals(fileName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public String move(String fromBucket, String fromKey, String toBucket) throws Exception {
-        Response response = bucketManager.move(fromBucket, fromKey, toBucket, fromKey);
-        logger.info("fromKey = {},result = {}", fromKey, JSON.toJSONString(response));
-        if (response.isOK() && response.isJson()) {
-            return this.host + fromKey;
-        }
-        throw new Exception(fromKey + "移动失败");
-    }
 
     public byte[] hmacSHA1Encrypt(String encryptText, String encryptKey) throws Exception {
         byte[] data = encryptKey.getBytes(StandardCharsets.UTF_8);

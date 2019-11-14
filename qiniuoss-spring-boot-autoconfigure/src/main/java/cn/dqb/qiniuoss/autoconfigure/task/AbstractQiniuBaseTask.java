@@ -1,7 +1,7 @@
 package cn.dqb.qiniuoss.autoconfigure.task;
 
 import cn.dqb.qiniuoss.autoconfigure.entity.MIMEType;
-import cn.dqb.qiniuoss.autoconfigure.entity.QiniuHelper;
+import cn.dqb.qiniuoss.autoconfigure.helper.QiniuHelper;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;

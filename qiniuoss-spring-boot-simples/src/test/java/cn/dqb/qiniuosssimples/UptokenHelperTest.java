@@ -1,28 +1,24 @@
-package cn.dqb.qiniutool;
+package cn.dqb.qiniuosssimples;
 
-import cn.dqb.qiniuoss.autoconfigure.entity.QiniuHelper;
+import cn.dqb.qiniuoss.autoconfigure.helper.UptokenHelper;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-/**
- * @date 2019/10/25 9:17
- */
 @SpringBootTest
-public class QiniuTokenTest {
+public class UptokenHelperTest {
 
     @Autowired
-    private QiniuHelper qiniuHelper;
+    private UptokenHelper uptokenHelper;
 
     @Test
     public void getUploadToken() {
-        String token = qiniuHelper.getUploadToken();
+        String token = uptokenHelper.getUploadToken();
         Assert.assertNotNull(token, "token is empty");
 
-        token = qiniuHelper.getUploadToken("image1.png");
+        token = uptokenHelper.getUploadToken("image1.png");
         Assert.assertNotNull(token, "token is empty");
-
     }
 
 }

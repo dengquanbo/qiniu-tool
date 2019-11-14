@@ -1,6 +1,6 @@
 package cn.dqb.qiniuoss.autoconfigure.task;
 
-import cn.dqb.qiniuoss.autoconfigure.entity.QiniuHelper;
+import cn.dqb.qiniuoss.autoconfigure.helper.QiniuHelper;
 import org.apache.commons.lang3.StringUtils;
 
 /**

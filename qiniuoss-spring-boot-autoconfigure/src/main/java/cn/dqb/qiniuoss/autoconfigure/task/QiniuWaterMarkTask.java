@@ -2,8 +2,8 @@ package cn.dqb.qiniuoss.autoconfigure.task;
 
 
 import cn.dqb.qiniuoss.autoconfigure.entity.OkHttpUtil;
-import cn.dqb.qiniuoss.autoconfigure.entity.QiniuHelper;
-import cn.dqb.qiniuoss.autoconfigure.exception.QiniuException;
+import cn.dqb.qiniuoss.autoconfigure.helper.QiniuHelper;
+import cn.dqb.qiniuoss.autoconfigure.exception.QiniuOssException;
 import com.alibaba.fastjson.JSON;
 import com.qiniu.util.UrlSafeBase64;
 import lombok.AllArgsConstructor;
@@ -87,7 +87,7 @@ public class QiniuWaterMarkTask extends AbstractQiniuBaseTask {
     @Override
     public String generateRule() throws Exception {
         if (StringUtils.isBlank(this.waterMaskUrl)) {
-            throw new QiniuException("七牛水印图无效");
+            throw new QiniuOssException("七牛水印图无效");
         }
         StringBuilder builder = new StringBuilder("watermark/1");
         builder.append("/image/").append(UrlSafeBase64.encodeToString(this.waterMaskUrl));
@@ -127,7 +127,7 @@ public class QiniuWaterMarkTask extends AbstractQiniuBaseTask {
         String key = JSON.parseObject(result).getString("key");
         log.info("七牛另存为新key = {}", key);
         if (StringUtils.isBlank(key)) {
-            throw new QiniuException("key is empty");
+            throw new QiniuOssException("key is empty");
         }
         return key;
     }

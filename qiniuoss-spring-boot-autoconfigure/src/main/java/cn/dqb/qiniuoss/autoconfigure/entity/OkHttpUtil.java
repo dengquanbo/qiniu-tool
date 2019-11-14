@@ -21,9 +21,7 @@ import org.slf4j.LoggerFactory;
 public class OkHttpUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(OkHttpUtil.class);
-    public static OkHttpClient client_15S;
     private static OkHttpClient client;
-    private static OkHttpClient downloadClient;
 
     static {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -31,14 +29,6 @@ public class OkHttpUtil {
             .retryOnConnectionFailure(true).sslSocketFactory(overlockCard());
         client = builder.build();
 
-        client_15S = new OkHttpClient.Builder().connectTimeout(15, TimeUnit.SECONDS).readTimeout(15, TimeUnit.SECONDS)
-            .writeTimeout(15, TimeUnit.SECONDS).retryOnConnectionFailure(true).sslSocketFactory(overlockCard())
-            .build();
-
-        OkHttpClient.Builder longBuilder = new OkHttpClient.Builder();
-        longBuilder.connectTimeout(1000, TimeUnit.SECONDS).readTimeout(1000, TimeUnit.SECONDS)
-            .writeTimeout(1000, TimeUnit.SECONDS).retryOnConnectionFailure(true).sslSocketFactory(overlockCard());
-        downloadClient = longBuilder.build();
     }
 
     public static String get(String url) throws IOException {
@@ -59,19 +49,8 @@ public class OkHttpUtil {
         }
     }
 
-    public static String post(String url, RequestBody requestBody) throws IOException {
-        LOG.info("url ={}, requestBody = {}", url, requestBody);
-        Request request = new Request.Builder().url(url).post(requestBody).addHeader("Connection", "keep-alive")
-            .build();
-        try (Response response = downloadClient.newCall(request).execute()) {
-            return response.body().string();
-        }
-    }
-
     /**
      * 以表单的形式提交数据
-     *
-     * @date 2019/2/18 15:22
      */
     public static String post(String url, FormBody formBody) throws IOException {
         Request request = new Request.Builder().url(url).post(formBody).build();
@@ -82,8 +61,6 @@ public class OkHttpUtil {
 
     /**
      * 异步 以表单的形式提交数据
-     *
-     * @date 2019/2/18 15:22
      */
     public static void post(String url, RequestBody requestBody, final Callback callback) {
         Request request = new Request.Builder().url(url).post(requestBody).build();
